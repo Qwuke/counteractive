@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="console-token" content="{{CONSOLE_TOKEN}}">
+<title>Counteractive demo</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>Counteractive</h1>
+    <p class="tagline">Buy inference credit on the clear web. Spend it over Tor. Nobody can join the two.</p>
+  </div>
+  <div class="phase" id="phase" data-phase="starting">
+    <span class="dot"></span><span id="phase-text">starting the stack…</span>
+  </div>
+</header>
+
+<section class="planes" aria-label="The two planes">
+  <div class="plane" id="plane-purchase" data-plane="purchase">
+    <div class="plane-label"><strong>Purchase plane</strong><span>clearnet · wallet-cli</span></div>
+    <ol class="hops">
+      <li data-hop="cli">wallet-cli</li>
+      <li data-hop="storefront">storefront <small>attested TLS</small></li>
+      <li data-hop="stripe">fake Stripe</li>
+      <li data-hop="issue">gate <small>issue.sock</small></li>
+    </ol>
+  </div>
+  <div class="plane" id="plane-use" data-plane="use">
+    <div class="plane-label"><strong>Use plane</strong><span id="use-plane-sub">Tor · walletd</span></div>
+    <ol class="hops" id="use-hops">
+      <li data-hop="browser">this page</li>
+      <li data-hop="walletd">walletd <small>127.0.0.1</small></li>
+      <li data-hop="arti" class="tor-only">Arti</li>
+      <li data-hop="tor" class="tor-only">Tor relays</li>
+      <li data-hop="onion" class="tor-only">onion service</li>
+      <li data-hop="gate">gate <small>attested</small></li>
+      <li data-hop="engine" id="engine-hop">engine</li>
+    </ol>
+  </div>
+</section>
+
+<main class="layout">
+  <div class="steps">
+    <section class="card" id="bringup">
+      <div class="card-head">
+        <h2><span class="num">0</span> Bring-up</h2>
+        <span class="badge" id="bringup-badge">running</span>
+      </div>
+      <p class="lede" id="bringup-lede">xtask generates the operator's keys, signs a release, starts every service, attests and unlocks
+        the gate, and signs its fresh issuer key into the manifest. <span id="tor-lede">C tor publishes the gate as an
+        onion service, and walletd bootstraps its own Tor client (Arti).</span></p>
+      <button type="button" class="link" id="bringup-toggle" hidden>show each step</button>
+      <ol class="timeline" id="timeline"></ol>
+      <p class="error-text" id="bringup-error" hidden></p>
+    </section>
+
+    <section class="card locked" id="step-manifest">
+      <div class="card-head">
+        <h2><span class="num">1</span> Approve the manifest</h2>
+        <span class="badge" id="manifest-badge">waiting</span>
+      </div>
+      <p class="lede">The wallet fetches the operator-signed manifest from the storefront and checks it against the
+        operator key pinned in <code>wallet.toml</code>. A new manifest is only trusted once you approve it.</p>
+      <div class="actions">
+        <button id="manifest-fetch" type="button">Fetch manifest</button>
+        <button id="manifest-approve" type="button" class="primary" disabled>Approve</button>
+      </div>
+      <dl class="facts" id="manifest-facts" hidden></dl>
+      <pre class="terminal" id="manifest-terminal" hidden></pre>
+    </section>
+
+    <section class="card locked" id="step-buy">
+      <div class="card-head">
+        <h2><span class="num">2</span> Buy credit</h2>
+        <span class="badge" id="buy-badge">waiting</span>
+      </div>
+      <p class="lede">The wallet blinds a fresh credential request, journals it, and opens an order. You pay on the
+        checkout page; the storefront then has the gate sign the blinded request, and the wallet unblinds it. The
+        storefront and the gate saw the payment, never the credential the wallet ends up holding.</p>
+      <div class="products" id="products"></div>
+      <pre class="terminal" id="buy-terminal" hidden></pre>
+      <ul class="purchases" id="purchases"></ul>
+    </section>
+
+    <section class="card locked" id="step-chat">
+      <div class="card-head">
+        <h2><span class="num">3</span> Chat over <span id="chat-transport">Tor</span></h2>
+        <span class="badge" id="chat-badge">waiting</span>
+      </div>
+      <p class="lede">Each conversation opens a session: walletd spends part of a credential to the gate, unlinkably,
+        and the gate meters every token against it. Closing the session refunds the rest as a fresh credential.
+        <span class="tor-only">Each session gets its own Tor circuits, so its first message waits for a fresh path to
+        the onion service: usually 5 to 30 seconds.</span></p>
+      <p class="path-check" id="path-check" hidden></p>
+      <div class="chat-controls">
+        <label>Model <select id="model"></select></label>
+        <span class="rates" id="rates"></span>
+      </div>
+      <div class="transcript" id="transcript" aria-live="polite">
+        <p class="empty" id="transcript-empty">The fake engine answers with NATO-alphabet words, a deterministic
+          stand-in for a real model, streamed token by token.</p>
+      </div>
+      <form class="composer" id="composer">
+        <textarea id="prompt" rows="2" placeholder="Say something to the model…" disabled></textarea>
+        <button id="send" type="submit" class="primary" disabled>Send</button>
+      </form>
+      <div class="actions">
+        <button id="settle" type="button" disabled>End session &amp; settle</button>
+      </div>
+      <div class="settlement" id="settlement" hidden></div>
+    </section>
+  </div>
+
+  <aside class="side">
+    <section class="card wallet">
+      <h2>Wallet</h2>
+      <div class="balance">
+        <span class="credits" id="total-credits">0</span>
+        <span class="unit">credits</span>
+        <span class="usd" id="total-usd">$0.00</span>
+      </div>
+      <ul class="chains" id="chains"></ul>
+      <ul class="estimates" id="estimates"></ul>
+      <p class="note" id="wallet-note"></p>
+    </section>
+
+    <section class="card">
+      <h2>Who sees what</h2>
+      <table class="sees">
+        <thead><tr><th></th><th>sees</th><th>never sees</th></tr></thead>
+        <tbody>
+          <tr><th>Storefront</th><td>a payment and a blinded request</td><td>the credential, any chat</td></tr>
+          <tr><th>Stripe</th><td>the payment</td><td>anything else</td></tr>
+          <tr><th>Gate</th><td>a blinded request to sign; later, unlinkable spends and prompts, inside the attested boundary</td><td>which payment a spend came from, your IP</td></tr>
+          <tr><th>Tor relays</th><td>encrypted cells</td><td>what or whom</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Components</h2>
+      <ul class="components" id="components"><li class="muted">starting…</li></ul>
+    </section>
+
+    <section class="card log-card">
+      <div class="card-head">
+        <h2>Activity</h2>
+        <label class="toggle"><input type="checkbox" id="follow" checked> follow</label>
+      </div>
+      <ol class="log" id="log"></ol>
+    </section>
+  </aside>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
