@@ -1,0 +1,29 @@
+[package]
+name = "manifest"
+description = "Manifest and release.json types, canonical JSON, minisign signatures and the wallet's accept rule."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+# Signing, for xtask only. Verification is always available.
+sign = ["dep:minisign", "dep:secrecy"]
+
+[dependencies]
+proto.workspace = true
+minisign = { workspace = true, optional = true }
+minisign-verify.workspace = true
+secrecy = { workspace = true, optional = true }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+# Enables `sign` for this crate's own tests.
+manifest = { path = ".", features = ["sign"] }
+hex.workspace = true

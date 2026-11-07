@@ -1,0 +1,20 @@
+[package]
+name = "proto"
+description = "Wire types for the gate, issue.sock, the storefront, Stripe, the engine and walletd's local API."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+base64.workspace = true
+hex.workspace = true
+secrecy.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true

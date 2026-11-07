@@ -1,0 +1,13 @@
+[package]
+name = "crash-point"
+description = "The crash_point! macro for kill tests. Compiles to nothing unless the `enabled` feature is on."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+enabled = []
