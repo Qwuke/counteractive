@@ -1,0 +1,28 @@
+[package]
+name = "backend"
+description = "InferenceBackend and the OpenAI-compatible engine adapter over a Unix socket (vLLM, llama.cpp, fake-engine)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+proto.workspace = true
+async-trait.workspace = true
+bytes.workspace = true
+futures.workspace = true
+http-body-util.workspace = true
+hyper.workspace = true
+hyper-util.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+fake-engine.workspace = true
+tempfile.workspace = true
