@@ -1,0 +1,180 @@
+# Counteractive prototype: one workspace, one lock.
+#
+# Every external dependency is declared once here with its version, and each
+# member names the ones it uses with `workspace = true`. The committed
+# Cargo.lock pins the exact versions that were resolved.
+
+[workspace]
+resolver = "3"
+members = [
+    "crates/proto",
+    "crates/credit",
+    "crates/manifest",
+    "crates/attest",
+    "crates/metering",
+    "crates/backend",
+    "crates/gate-conn",
+    "crates/crash-point",
+    "crates/gate",
+    "crates/storefront",
+    "crates/wallet-core",
+    "crates/wallet-cli",
+    "crates/walletd",
+    "crates/fake-engine",
+    "crates/fake-stripe",
+    "xtask",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94"
+publish = false
+
+[workspace.lints.rust]
+unsafe_code = "deny"
+unused_must_use = "deny"
+rust_2018_idioms = { level = "warn", priority = -1 }
+redundant_lifetimes = "warn"
+trivial_numeric_casts = "warn"
+unused_lifetimes = "warn"
+unused_qualifications = "warn"
+
+# Clippy runs with `-D warnings`, so every lint here must stay at zero.
+[workspace.lints.clippy]
+# All of pedantic, minus the lints that are mostly noise in a codebase that
+# documents its errors in prose and has no public API to mark #[must_use].
+pedantic = { level = "warn", priority = -1 }
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+similar_names = "allow"
+
+# Restriction lints, picked one by one. Tests are exempt from the panic
+# lints through clippy.toml.
+# No panics outside tests, except where an #[expect] gives the reason.
+get_unwrap = "warn"
+panic = "warn"
+panic_in_result_fn = "warn"
+string_slice = "warn"
+unwrap_in_result = "warn"
+unwrap_used = "warn"
+# No placeholders left behind.
+dbg_macro = "warn"
+todo = "warn"
+unimplemented = "warn"
+# No silently discarded errors, and test failures that show the error.
+assertions_on_result_states = "warn"
+unused_result_ok = "warn"
+# A suppression is an #[expect] with a reason, never a bare #[allow].
+allow_attributes = "warn"
+allow_attributes_without_reason = "warn"
+# Readability: a cheap pointer clone is spelled `Arc::clone(&x)`, so every
+# remaining `.clone()` is a real copy; a trait imported only for its
+# methods is `as _`; trait impls keep the trait's parameter names.
+clone_on_ref_ptr = "warn"
+format_push_string = "warn"
+renamed_function_params = "warn"
+unused_trait_names = "warn"
+verbose_file_reads = "warn"
+# Nursery lints with no known false positives here.
+needless_pass_by_ref_mut = "warn"
+redundant_clone = "warn"
+
+[workspace.dependencies]
+# Workspace crates.
+proto = { path = "crates/proto" }
+credit = { path = "crates/credit" }
+manifest = { path = "crates/manifest" }
+attest = { path = "crates/attest" }
+metering = { path = "crates/metering" }
+backend = { path = "crates/backend" }
+gate-conn = { path = "crates/gate-conn" }
+crash-point = { path = "crates/crash-point" }
+wallet-core = { path = "crates/wallet-core" }
+fake-engine = { path = "crates/fake-engine" }
+fake-stripe = { path = "crates/fake-stripe" }
+
+# EC-ACT. Only `credit` may depend on this (ARCHITECTURE 8.2 rule 2).
+act-rs = { git = "https://github.com/Moderation-of-unLinkable-Endorsements/act-rs", rev = "0fe1d8f75ba1fa40e9b464b27d747555f560c889" }
+
+# Async runtime and HTTP.
+tokio = { version = "1.54.1", features = ["full"] }
+tokio-util = { version = "0.7.20", features = ["rt"] }
+futures = "0.3.34"
+bytes = "1.12.1"
+hyper = { version = "1.12.0", features = ["client", "server", "http1"] }
+hyper-util = { version = "0.1.21", features = ["tokio", "server", "client", "client-legacy", "http1", "service"] }
+http-body-util = "0.1.5"
+axum = "0.8.9"
+tower = { version = "0.5.3", features = ["util"] }
+async-trait = "0.1.92"
+# The storefront's one outbound client, to Stripe. Never used by the wallet or the gate.
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "form", "json"] }
+
+# Serialisation and encodings.
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+toml = "1.2.1"
+base64 = "0.23.1"
+hex = "0.4.3"
+
+# Cryptography.
+sha2 = "0.11.1"
+hkdf = "0.13.0"
+chacha20poly1305 = "0.11.0"
+ed25519-dalek = "3.0.0"
+rand = "0.10.3"
+subtle = "2.6.1"
+secrecy = { version = "0.10.3", features = ["serde"] }
+zeroize = { version = "1.9.1", features = ["zeroize_derive"] }
+minisign = "0.10.0"
+minisign-verify = "0.3.0"
+
+# Inner TLS. aws-lc-rs is the only rustls provider in the graph.
+rustls = { version = "0.23.46", default-features = false, features = ["aws_lc_rs", "std", "logging"] }
+tokio-rustls = { version = "0.26.6", default-features = false, features = ["aws_lc_rs"] }
+rcgen = { version = "0.14.10", default-features = false, features = ["crypto", "aws_lc_rs"] }
+rustls-pki-types = { version = "1.15.1", features = ["std"] }
+x509-parser = "0.18.1"
+
+# Durable state. 0.40 because Arti's tor-dirmgr requires rusqlite < 0.41, and
+# `libsqlite3-sys` can only appear once in a graph (`links = "sqlite3"`).
+rusqlite = { version = "0.40.2", features = ["bundled-sqlcipher-vendored-openssl"] }
+
+# Tor client for walletd, behind gate-conn's `arti` feature.
+arti-client = { version = "0.48.0", default-features = false, features = ["tokio", "native-tls", "compression", "onion-service-client"] }
+tor-rtcompat = { version = "0.48.0", default-features = false, features = ["tokio", "native-tls"] }
+
+# Errors, logging, command lines.
+thiserror = "2.0.21"
+anyhow = "1.0.104"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "fmt"] }
+clap = { version = "4.6.7", features = ["derive", "env"] }
+
+# Tests and dev trees.
+tempfile = "3.27.0"
+
+# Proofs and curve arithmetic are slow unoptimised, so these crates are built
+# optimised even in dev and test builds. Workspace code stays debuggable.
+[profile.dev.package.act-rs]
+opt-level = 3
+[profile.dev.package.ihat-rs]
+opt-level = 3
+[profile.dev.package.p256]
+opt-level = 3
+[profile.dev.package.primeorder]
+opt-level = 3
+[profile.dev.package.elliptic-curve]
+opt-level = 3
+[profile.dev.package.crypto-bigint]
+opt-level = 3
+[profile.dev.package.ff]
+opt-level = 3
+[profile.dev.package.shake]
+opt-level = 3
+[profile.dev.package.sha2]
+opt-level = 3
+[profile.dev.package.curve25519-dalek]
+opt-level = 3

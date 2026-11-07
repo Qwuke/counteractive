@@ -1,0 +1,8 @@
+# Superseded material, kept out of the repo.
+/archive/
+# Build output, including per-agent target dirs.
+target*/
+# Local trees xtask writes: keys, SSH keys, sockets, stores, logs.
+.dev/
+.verda*/
+.DS_Store

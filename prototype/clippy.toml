@@ -1,0 +1,11 @@
+# Tests may unwrap and panic: a failing test should fail loudly.
+allow-unwrap-in-tests = true
+allow-panic-in-tests = true
+allow-dbg-in-tests = true
+
+# axum calls these parameters `req`, `parts` and `state`; ours say what
+# the state is (`gate`) and spell words out.
+allow-renamed-params-for = ["..", "axum::extract::FromRequest", "axum::extract::FromRequestParts"]
+
+# Product names that doc_markdown would otherwise take for code.
+doc-valid-idents = ["OpenAI", "SQLCipher", "SQLite", "PoC", ".."]

@@ -1,0 +1,4 @@
+# Build output, including per-agent target dirs such as target-gate/.
+target*/
+# The dev tree xtask writes: keys, sockets, stores, logs.
+.dev/
