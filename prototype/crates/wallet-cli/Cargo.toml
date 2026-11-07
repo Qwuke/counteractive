@@ -1,0 +1,49 @@
+[package]
+name = "wallet-cli"
+description = "Purchase and issuance over the TCP dialer; drives walletd over localhost for everything on the use plane."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+# Arms crash_point! for kill tests. Never on in a release build.
+crash-points = ["crash-point/enabled", "wallet-core/crash-points"]
+
+[dependencies]
+wallet-core.workspace = true
+proto.workspace = true
+credit.workspace = true
+manifest.workspace = true
+attest.workspace = true
+# TCP only: wallet-cli must never reach the gate or pull in Arti (ARCHITECTURE 8.2 rule 5).
+gate-conn = { workspace = true, features = ["tcp"] }
+crash-point.workspace = true
+anyhow.workspace = true
+bytes.workspace = true
+clap.workspace = true
+http-body-util.workspace = true
+hyper.workspace = true
+hyper-util.workspace = true
+secrecy.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing-subscriber.workspace = true
+zeroize.workspace = true
+
+[dev-dependencies]
+# tests/cli runs the binary against a storefront on fake-stripe, with a
+# stub gate's issue.sock, and against a stub walletd. Neither brings in Arti.
+storefront = { path = "../storefront" }
+fake-stripe.workspace = true
+manifest = { workspace = true, features = ["sign"] }
+gate-conn = { workspace = true, features = ["tcp", "server"] }
+axum.workspace = true
+tokio-util.workspace = true
+tempfile.workspace = true
+hex.workspace = true
+sha2.workspace = true

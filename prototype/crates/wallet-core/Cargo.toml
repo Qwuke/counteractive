@@ -1,0 +1,34 @@
+[package]
+name = "wallet-core"
+description = "The wallet's journal, chain state machine, balance view, reconcile and manifest store. No network code."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+# Arms crash_point! for kill tests. Never on in a release build.
+crash-points = ["crash-point/enabled"]
+
+[dependencies]
+proto.workspace = true
+credit.workspace = true
+manifest.workspace = true
+metering.workspace = true
+crash-point.workspace = true
+hex.workspace = true
+rand.workspace = true
+rusqlite.workspace = true
+secrecy.workspace = true
+serde.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+toml.workspace = true
+tracing.workspace = true
+zeroize.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

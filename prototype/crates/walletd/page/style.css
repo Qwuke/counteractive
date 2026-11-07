@@ -1,0 +1,82 @@
+:root {
+  --text: #1c1d1f;
+  --muted: #5b5f66;
+  --border: #d5d8dd;
+  --surface: #f6f7f9;
+  --accent: #2f5bd3;
+  --warning: #8a4b00;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e8e9eb;
+    --muted: #a4a8b0;
+    --border: #3a3d43;
+    --surface: #1f2125;
+    --accent: #8aa8ff;
+    --warning: #f0b35a;
+  }
+}
+
+body {
+  margin: 0 auto;
+  max-width: 48rem;
+  padding: 1rem;
+  font: 16px/1.5 system-ui, sans-serif;
+  color: var(--text);
+}
+
+section {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 1rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.warning { color: var(--warning); }
+
+#transcript {
+  margin: 1rem 0;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.message p {
+  margin: 0.25rem 0 0.75rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message.assistant p {
+  background: var(--surface);
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  font: inherit;
+}
+
+button {
+  font: inherit;
+  margin-top: 0.5rem;
+}
+
+pre {
+  white-space: pre-wrap;
+  background: var(--surface);
+  padding: 0.5rem;
+}
+
+#status { color: var(--muted); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

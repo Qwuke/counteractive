@@ -1,0 +1,54 @@
+[package]
+name = "walletd"
+description = "Spends credentials over the Unix or Arti dialer and serves the local OpenAI-compatible API and page."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+# Tier 2: reach the gate through Tor. Never the TCP dialer (ARCHITECTURE 8.2 rule 5).
+arti = ["gate-conn/arti"]
+# Arms crash_point! for kill tests. Never on in a release build.
+crash-points = ["crash-point/enabled", "wallet-core/crash-points"]
+
+[dependencies]
+wallet-core.workspace = true
+proto.workspace = true
+credit.workspace = true
+manifest.workspace = true
+attest.workspace = true
+gate-conn.workspace = true
+crash-point.workspace = true
+anyhow.workspace = true
+axum.workspace = true
+clap.workspace = true
+futures.workspace = true
+hex.workspace = true
+rand.workspace = true
+secrecy.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+subtle.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+zeroize.workspace = true
+
+[dev-dependencies]
+# The tests in src/tests run a gate, its fake engine and a signing operator
+# in process. None of them enables gate-conn's tcp dialer or needs reqwest.
+gate = { path = "../gate" }
+fake-engine.workspace = true
+manifest = { workspace = true, features = ["sign"] }
+async-trait.workspace = true
+tempfile.workspace = true
+bytes.workspace = true
+http-body-util.workspace = true
+hyper.workspace = true
+hyper-util.workspace = true
+sha2.workspace = true
+tower.workspace = true

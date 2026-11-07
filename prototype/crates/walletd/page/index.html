@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="walletd-token" content="{{TOKEN}}">
+  <title>Counteractive wallet</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>Counteractive wallet</h1>
+    <p id="experimental" class="warning" hidden>
+      Experimental platform: this service runs without full hardware verification.
+    </p>
+  </header>
+
+  <section id="balance-panel" aria-labelledby="balance-title">
+    <h2 id="balance-title">Balance</h2>
+    <p><span id="total-usd">-</span> USD (<span id="total-credits">-</span> credits)</p>
+    <ul id="estimates"></ul>
+    <p id="balance-notes"></p>
+    <button id="refresh" type="button">Refresh</button>
+    <button id="reconcile" type="button">Reconcile</button>
+    <pre id="reconcile-report" hidden></pre>
+  </section>
+
+  <section id="chat-panel" aria-labelledby="chat-title">
+    <h2 id="chat-title">Chat</h2>
+    <label for="model">Model</label>
+    <select id="model"></select>
+    <button id="new-conversation" type="button">New conversation</button>
+    <div id="transcript" aria-live="polite"></div>
+    <form id="composer">
+      <label for="prompt" class="visually-hidden">Message</label>
+      <textarea id="prompt" rows="3" required></textarea>
+      <button id="send" type="submit">Send</button>
+    </form>
+    <p id="status" role="status"></p>
+  </section>
+
+  <script src="/app.js"></script>
+</body>
+</html>
