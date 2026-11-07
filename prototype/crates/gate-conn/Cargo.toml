@@ -1,0 +1,54 @@
+[package]
+name = "gate-conn"
+description = "Dialers, inner TLS, and connections that can only carry secrets after attestation. Optional shared server pieces."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+# The clearnet dialer, for wallet-cli and xtask. walletd must never enable it.
+tcp = []
+# The Tor dialer, for walletd only. wallet-cli must never enable it.
+arti = ["dep:arti-client", "dep:tor-rtcompat"]
+# Identity generation, the rustls server config and the serve loops, for the gate and storefront.
+server = ["dep:axum", "dep:rcgen", "dep:tokio-util"]
+
+[dependencies]
+proto.workspace = true
+attest.workspace = true
+manifest.workspace = true
+async-trait.workspace = true
+bytes.workspace = true
+http-body-util.workspace = true
+hyper.workspace = true
+hyper-util.workspace = true
+rand.workspace = true
+rustls.workspace = true
+rustls-pki-types.workspace = true
+secrecy.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-rustls.workspace = true
+tracing.workspace = true
+x509-parser.workspace = true
+arti-client = { workspace = true, optional = true }
+tor-rtcompat = { workspace = true, optional = true }
+axum = { workspace = true, optional = true }
+rcgen = { workspace = true, optional = true }
+tokio-util = { workspace = true, optional = true }
+
+[dev-dependencies]
+# Enables `server` so the in-crate test can run a real server.
+gate-conn = { path = ".", features = ["server"] }
+manifest = { workspace = true, features = ["sign"] }
+axum.workspace = true
+# `channel` lets the test server send an event stream a frame at a time.
+http-body-util = { workspace = true, features = ["channel"] }
+tempfile.workspace = true
