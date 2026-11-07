@@ -1,0 +1,26 @@
+[package]
+name = "fake-stripe"
+description = "The two Stripe Checkout Session endpoints, in memory, plus a test pay call."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+proto.workspace = true
+anyhow.workspace = true
+axum.workspace = true
+clap.workspace = true
+hex.workspace = true
+rand.workspace = true
+serde.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
