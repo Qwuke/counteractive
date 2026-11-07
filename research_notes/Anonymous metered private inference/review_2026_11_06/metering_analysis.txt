@@ -1,0 +1,128 @@
+
+## T1 prompt_tokens: server usage vs HF tokenizer + HF template
+| category | n (200 OK) | count mismatches | rejected by server | token IDs identical to /tokenize |
+|---|---|---|---|---|
+| ascii | 25 | 0 | 0 | 25 |
+| latin_combining_misc | 25 | 0 | 0 | 25 |
+| emoji | 36 | 0 | 0 | 36 |
+| cjk | 30 | 0 | 0 | 30 |
+| rtl | 24 | 0 | 0 | 24 |
+| code | 30 | 0 | 0 | 30 |
+| long_whitespace | 54 | 0 | 0 | 54 |
+| special_token_like | 52 | 0 | 0 | 52 |
+| stop_sequence | 40 | 0 | 0 | 40 |
+| max_tokens_trunc | 30 | 0 | 0 | 30 |
+| multi_turn | 30 | 0 | 0 | 30 |
+| assistant_prefill | 10 | 10 | 0 | 0 |
+| edge_cases | 18 | 3 | 2 | 15 |
+| utf8_partial_forced | 20 | 0 | 0 | 20 |
+| special_output_forced | 10 | 0 | 0 | 10 |
+total 434 mismatch 13 3.0%
+Counter({'assistant prefill: server continues last message, HF template closes it (delta +6)': 10, 'server rejects lone surrogate JSON (HTTP 400); nothing billed': 2, 'client template cannot render typed content parts (server flattens them)': 2, "role 'developer': server renames to system, default system prompt not injected (delta +22)": 1})
+hold(prompt) via /apply-template+/tokenize exact: 434 / 434 {'exact': 434, 'n': 434, 'lookup_ms_median': 0.8898749947547913, 'lookup_ms_p95': 1.3405829668045044}
+
+## T1 completion_tokens vs re-encoding delivered text
+| category | n | mismatch rate | min delta | max delta | reported tokens | recounted tokens | under-count |
+|---|---|---|---|---|---|---|---|
+| ascii | 25 | 11/25 (44.0%) | 0 | 1 | 928 | 917 | 1.2% |
+| latin_combining_misc | 25 | 9/25 (36.0%) | 0 | 1 | 1136 | 1127 | 0.8% |
+| emoji | 36 | 29/36 (80.6%) | 0 | 2 | 1787 | 1752 | 2.0% |
+| cjk | 30 | 18/30 (60.0%) | 0 | 2 | 1799 | 1780 | 1.1% |
+| rtl | 24 | 15/24 (62.5%) | 0 | 4 | 1261 | 1242 | 1.5% |
+| code | 30 | 10/30 (33.3%) | 0 | 2 | 1360 | 1349 | 0.8% |
+| long_whitespace | 54 | 24/54 (44.4%) | 0 | 1 | 2778 | 2754 | 0.9% |
+| special_token_like | 52 | 32/52 (61.5%) | 0 | 1 | 1455 | 1423 | 2.2% |
+| stop_sequence | 40 | 27/40 (67.5%) | 0 | 2 | 869 | 841 | 3.2% |
+| max_tokens_trunc | 30 | 12/30 (40.0%) | 0 | 2 | 435 | 422 | 3.0% |
+| multi_turn | 30 | 26/30 (86.7%) | 0 | 2 | 893 | 865 | 3.1% |
+| assistant_prefill | 10 | 9/10 (90.0%) | -3 | 0 | 530 | 544 | -2.6% |
+| edge_cases | 18 | 10/18 (55.6%) | 0 | 1 | 839 | 829 | 1.2% |
+| utf8_partial_forced | 20 | 5/20 (25.0%) | 0 | 16 | 309 | 287 | 7.1% |
+| special_output_forced | 10 | 5/10 (50.0%) | -2 | 1 | 217 | 215 | 0.9% |
+total Counter({'rep': 16596, 'enc': 16347, 'n': 434, 'mis': 242}) 55.8%
+with +1 for EOS heuristics: mismatch 88/434 (20.3%)
+
+## Completion mismatch by temperature (after +1 EOS adjustment)
+| temperature | n | mismatch |
+|---|---|---|
+| 0 | 78 | 17/78 (21.8%) |
+| 0.3 | 83 | 14/83 (16.9%) |
+| 0.7 | 131 | 31/131 (23.7%) |
+| 1.0 | 76 | 12/76 (15.8%) |
+| 1.4 | 66 | 14/66 (21.2%) |
+
+root cause request counts Counter({'match': 234, 'eos_counted': 160, 'noncanonical_sequence_reencode_differs': 26, 'stop_string_trimmed': 16})
+root cause token deltas Counter({'eos_counted': 160, 'noncanonical_sequence_reencode_differs': 35, 'stop_string_trimmed': 16, 'special_token_invisible_in_text': 0})
+
+## Root causes per category, native path where true IDs are known (a request can have several)
+| category | n | re-encode mismatch | eos | special invisible | non-canonical | stop trim | partial UTF-8/text |
+|---|---|---|---|---|---|---|---|
+| ascii | 25 | 11 | 11 | 0 | 0 | 0 | 0 |
+| latin_combining_misc | 25 | 7 | 5 | 0 | 2 | 0 | 0 |
+| emoji | 36 | 21 | 15 | 0 | 6 | 0 | 0 |
+| cjk | 30 | 9 | 8 | 0 | 1 | 0 | 0 |
+| rtl | 24 | 15 | 13 | 0 | 3 | 0 | 0 |
+| code | 30 | 11 | 11 | 0 | 0 | 0 | 0 |
+| long_whitespace | 54 | 19 | 18 | 0 | 1 | 0 | 0 |
+| special_token_like | 52 | 32 | 31 | 0 | 1 | 0 | 0 |
+| stop_sequence | 40 | 27 | 10 | 0 | 2 | 16 | 0 |
+| max_tokens_trunc | 30 | 4 | 0 | 0 | 4 | 0 | 0 |
+| multi_turn | 30 | 20 | 18 | 0 | 2 | 0 | 0 |
+| assistant_prefill | 10 | 5 | 4 | 0 | 1 | 0 | 0 |
+| edge_cases | 18 | 11 | 11 | 0 | 0 | 0 | 0 |
+| utf8_partial_forced | 20 | 3 | 1 | 0 | 2 | 0 | 0 |
+| special_output_forced | 10 | 5 | 4 | 0 | 1 | 0 | 0 |
+encode(decode(ids)) != ids (full token list incl. EOS): 62/434 (14.3%)
+ T 0 decode->encode count differs (specials removed): 5/78 (6.4%)
+ T 0.3 decode->encode count differs (specials removed): 2/83 (2.4%)
+ T 0.7 decode->encode count differs (specials removed): 9/131 (6.9%)
+ T 1.0 decode->encode count differs (specials removed): 2/76 (2.6%)
+ T 1.4 decode->encode count differs (specials removed): 8/66 (12.1%)
+
+## T2 methods vs server-reported count
+| method | n | mismatch | max abs delta |
+|---|---|---|---|
+| A. re-encode text (chat, non-stream) | 434 | 242/434 (55.8%) | 16 |
+| B. OAI logprobs id list (chat, non-stream) | 434 | 157/434 (36.2%) | 86 |
+| C. OAI logprobs id list (chat, stream) | 145 | 92/145 (63.4%) | 72 |
+| D. content chunk count (chat, stream) | 434 | 284/434 (65.4%) | 86 |
+| E. verbose+return_tokens __verbose.tokens (chat, non-stream) | 434 | 0/434 (0.0%) | 0 |
+| F. /completion return_tokens tokens[] (native, non-stream) | 434 | 0/434 (0.0%) | 0 |
+| G. /completion return_tokens tokens[] (native, stream) | 434 | 136/434 (31.3%) | 86 |
+| H. native stream running tokens_predicted, last value, vs final | 434 | 49/434 (11.3%) | 8 |
+| I. chat stream timings_per_token predicted_n, last content chunk, vs usage | 434 | 224/434 (51.6%) | 8 |
+
+## T2 mismatch by category (mismatches/n)
+| category | A | B | C | D | E | F | G | H | I |
+|---|---|---|---|---|---|---|---|---|---|
+| ascii | 11/25 | 0/25 | 5/9 | 11/25 | 0/25 | 0/25 | 0/25 | 0/25 | 11/25 |
+| latin_combining_misc | 9/25 | 13/25 | 4/8 | 16/25 | 0/25 | 0/25 | 13/25 | 4/25 | 9/25 |
+| emoji | 29/36 | 30/36 | 10/12 | 32/36 | 0/36 | 0/36 | 30/36 | 11/36 | 26/36 |
+| cjk | 18/30 | 28/30 | 10/10 | 29/30 | 0/30 | 0/30 | 27/30 | 11/30 | 19/30 |
+| rtl | 15/24 | 13/24 | 6/8 | 22/24 | 0/24 | 0/24 | 13/24 | 2/24 | 15/24 |
+| code | 10/30 | 0/30 | 2/10 | 11/30 | 0/30 | 0/30 | 0/30 | 0/30 | 11/30 |
+| long_whitespace | 24/54 | 1/54 | 7/18 | 21/54 | 0/54 | 0/54 | 3/54 | 0/54 | 18/54 |
+| special_token_like | 32/52 | 1/52 | 9/17 | 32/52 | 0/52 | 0/52 | 1/52 | 0/52 | 31/52 |
+| stop_sequence | 27/40 | 24/40 | 12/14 | 28/40 | 0/40 | 0/40 | 0/40 | 0/40 | 25/40 |
+| max_tokens_trunc | 12/30 | 20/30 | 10/10 | 20/30 | 0/30 | 0/30 | 20/30 | 13/30 | 13/30 |
+| multi_turn | 26/30 | 12/30 | 8/10 | 27/30 | 0/30 | 0/30 | 14/30 | 4/30 | 22/30 |
+| assistant_prefill | 9/10 | 4/10 | 3/3 | 8/10 | 0/10 | 0/10 | 4/10 | 1/10 | 5/10 |
+| edge_cases | 10/18 | 1/18 | 3/6 | 12/18 | 0/18 | 0/18 | 1/18 | 0/18 | 11/18 |
+| utf8_partial_forced | 5/20 | 10/20 | 1/6 | 11/20 | 0/20 | 0/20 | 10/20 | 3/20 | 4/20 |
+| special_output_forced | 5/10 | 0/10 | 2/4 | 4/10 | 0/10 | 0/10 | 0/10 | 0/10 | 4/10 |
+I residual (finish, has_stop, delta): [(('length', False, '4+'), 2), (('length', False, 0), 195), (('length', False, 1), 35), (('length', False, 2), 12), (('length', True, 0), 6), (('stop', False, 1), 150), (('stop', True, 0), 9), (('stop', True, 1), 24), (('stop', True, 2), 1)]
+verbose tokens last==EOG by stop_type Counter({('limit', False): 246, ('eos', True): 164, ('word', False): 24})
+decode(ids) vs delivered text: Counter({'equal': 357, 'partial_utf8_tail': 43, 'ids_extend_text_stop_word': 24, 'other': 8, 'whitespace_only_diff': 2})
+    (377, 'assistant_prefill', 'eos', "'The answer to the question of how we remember and remember rain is the same,\\nT", "' to the question of how we remember and remember rain is the same,\\nThe raindro")
+    (378, 'assistant_prefill', 'limit', "'好的，我们可以在Python中使用的好的编写方法，我们将您给了几个主要的因此，我们可以写出几个数字。\\n'", "'，我们可以在Python中使用的好的编写方法，我们将您给了几个主要的因此，我们可以写出几个数字。\\n'")
+    (379, 'assistant_prefill', 'eos', '\'The answer to this is, "Photosynthesis is a process that plants use to convert ', '\' to this is, "Photosynthesis is a process that plants use to convert sunlight i')
+    (380, 'assistant_prefill', 'eos', '\'The answer to this joke is: "Why do cats sleep all day?"\'', '\' to this joke is: "Why do cats sleep all day?"\'')
+    (381, 'assistant_prefill', 'eos', '"The answer to your question is: HTTP stands for HyperText Transfer Protocol. It', '" to your question is: HTTP stands for HyperText Transfer Protocol. It is a laye')
+    (382, 'assistant_prefill', 'limit', "'好的，我们的中文介绍是：北京，北京，北京？\\n\\n北京是一位国外的国外，是一位国外的国外，是一位国外的国外，是一位国外的国外！\\n\\n所'", "'，我们的中文介绍是：北京，北京，北京？\\n\\n北京是一位国外的国外，是一位国外的国外，是一位国外的国外，是一位国外的国外！\\n\\n所'")
+    (383, 'assistant_prefill', 'limit', '\'The answer to your question about the "laughing face" is a tongue-in-cheek joke', '\' to your question about the "laughing face" is a tongue-in-cheek joke. It\\\'s a ')
+    (385, 'assistant_prefill', 'limit', "'好的！🛍🌟！☁\\n\\n反正？？⚡？！✖🛠（🛨；；；；！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！'", "'！🛍🌟！☁\\n\\n反正？？⚡？！✖🛠（🛨；；；；！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！�'")
+timings.predicted_n == usage.completion_tokens Counter({True: 434})
+corpus ceiling: over/total {'chat': (0, 434), 'chat_stream': (0, 145), 'native': (0, 144), 'cv': (0, 434), 'cs': (0, 434), 'nat': (0, 434), 'nats': (0, 434)} SUM 0 2459
+logprobs on/off control Counter({'n': 109, 'same_usage': 104, 'same_text': 99})
+random-ID fuzz, decode->encode count differs: 1822/5000 (36.4%)
+real-output prefixes, decode->encode count differs: 199/3594 (5.5%)

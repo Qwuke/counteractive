@@ -1,0 +1,44 @@
+{
+  "review_date": "2026-11-06",
+  "source_root": "/private/tmp/claude-501/-Users-qwuke-Projects-counteractive/85f7ca71-591a-49ab-8311-dcdd0f25bf9b/scratchpad/spikes",
+  "original_report_sha256": "024a41fa95b9fee3598a33efb82b3f6dc8618d16194677b7229b0db0b7d3a77a",
+  "files": {
+    "metering_summary.json": {
+      "source": "metering/raw/t12_results.json",
+      "sha256": "217ac5490813a04ce8055299bf12b121286b6dd9ac571560c17195525946e352",
+      "kind": "verbatim experiment output"
+    },
+    "metering_analysis.txt": {
+      "source": "metering/raw/t12_analysis.txt",
+      "sha256": "703e1808b4723173cd80c074f9300f915f322748feeea427669a8574f3593b25",
+      "kind": "verbatim experiment output"
+    },
+    "attestation_measurements.txt": {
+      "source": "attestation/output/A3_real_report_repro.txt",
+      "sha256": "23a6fd5a3e5fd5cfaeee17f7a117b8e682013c4b1bd83638e17dcfb410fcc3d4",
+      "kind": "verbatim experiment output"
+    },
+    "credit_negative_tests.txt": {
+      "source": "act/raw/ristretto_t2.txt",
+      "sha256": "09b7c752ecd76a8c185067abc0f9f0ef991d847622a69511ff95e20076cfa736",
+      "kind": "verbatim experiment output"
+    },
+    "credit_races.txt": {
+      "source": "act/raw/ristretto_t4.txt",
+      "sha256": "18db7242e3cd7c23137062a285e4fbc183065f998465e4a61f70ec65593756fa",
+      "kind": "verbatim experiment output"
+    },
+    "metering_projection.json": {
+      "source": "metering/raw/t12_records.jsonl",
+      "source_sha256": "7f0c99d30bb5ea7b4f60dc49b0df14aa6be6921a0e8b605e692f5f9e59f3fbc1",
+      "sha256": "6952099c147ab0fbe46e39cb040f1cb3bbdbebbc450a6e641375887e39d1177e",
+      "kind": "projection of numeric fields; deduplicated by request i, as in original analyzer; prompts and output text omitted"
+    },
+    "tor_projection.json": {
+      "source": "tor/raw/results/analysis.json",
+      "source_sha256": "8b1e764bffeaf798608dd2bceb3cf4a1339887c50441cc23223be1af55d4eb9d",
+      "sha256": "3ac0a88c7bd82bbfc36d6678c3abed02ae04e7de95a46382f820c2aecc435b31",
+      "kind": "projection of completion and token counts from original aggregate analysis; not raw packet data"
+    }
+  }
+}

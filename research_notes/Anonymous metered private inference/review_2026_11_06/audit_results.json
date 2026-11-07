@@ -1,0 +1,156 @@
+{
+  "method": "Reanalysis of recorded evidence, not a rerun of the experiments",
+  "evidence_files_checksum_verified": 7,
+  "metering": {
+    "recorded_requests": 436,
+    "accepted_requests": 434,
+    "preflight_prompt_matches": 434,
+    "output_within_requested_limit": 434,
+    "total_hold_tokens": 54079,
+    "total_used_tokens": 43589,
+    "reported_completion_tokens_from_records": 16596,
+    "recounted_completion_tokens_from_original_analyzer": 16347,
+    "aggregate_undercount_percent": 1.500361532899494,
+    "per_category_from_original_analyzer": [
+      {
+        "category": "ascii",
+        "requests": 25,
+        "reported": 928,
+        "recounted": 917,
+        "undercount_percent": 1.1853448275862069
+      },
+      {
+        "category": "latin_combining_misc",
+        "requests": 25,
+        "reported": 1136,
+        "recounted": 1127,
+        "undercount_percent": 0.7922535211267606
+      },
+      {
+        "category": "emoji",
+        "requests": 36,
+        "reported": 1787,
+        "recounted": 1752,
+        "undercount_percent": 1.9585898153329602
+      },
+      {
+        "category": "cjk",
+        "requests": 30,
+        "reported": 1799,
+        "recounted": 1780,
+        "undercount_percent": 1.056142301278488
+      },
+      {
+        "category": "rtl",
+        "requests": 24,
+        "reported": 1261,
+        "recounted": 1242,
+        "undercount_percent": 1.506740681998414
+      },
+      {
+        "category": "code",
+        "requests": 30,
+        "reported": 1360,
+        "recounted": 1349,
+        "undercount_percent": 0.8088235294117647
+      },
+      {
+        "category": "long_whitespace",
+        "requests": 54,
+        "reported": 2778,
+        "recounted": 2754,
+        "undercount_percent": 0.8639308855291576
+      },
+      {
+        "category": "special_token_like",
+        "requests": 52,
+        "reported": 1455,
+        "recounted": 1423,
+        "undercount_percent": 2.1993127147766325
+      },
+      {
+        "category": "stop_sequence",
+        "requests": 40,
+        "reported": 869,
+        "recounted": 841,
+        "undercount_percent": 3.2220943613348676
+      },
+      {
+        "category": "max_tokens_trunc",
+        "requests": 30,
+        "reported": 435,
+        "recounted": 422,
+        "undercount_percent": 2.9885057471264367
+      },
+      {
+        "category": "multi_turn",
+        "requests": 30,
+        "reported": 893,
+        "recounted": 865,
+        "undercount_percent": 3.135498320268757
+      },
+      {
+        "category": "assistant_prefill",
+        "requests": 10,
+        "reported": 530,
+        "recounted": 544,
+        "undercount_percent": -2.641509433962264
+      },
+      {
+        "category": "edge_cases",
+        "requests": 18,
+        "reported": 839,
+        "recounted": 829,
+        "undercount_percent": 1.1918951132300357
+      },
+      {
+        "category": "utf8_partial_forced",
+        "requests": 20,
+        "reported": 309,
+        "recounted": 287,
+        "undercount_percent": 7.119741100323624
+      },
+      {
+        "category": "special_output_forced",
+        "requests": 10,
+        "reported": 217,
+        "recounted": 215,
+        "undercount_percent": 0.9216589861751152
+      }
+    ],
+    "limitation": "Tokenizer was not rerun; recount values come from the original analyzer output. No 5% detection guarantee follows from these aggregates."
+  },
+  "tor_recorded_analysis": {
+    "runs": 11,
+    "complete_runs": 11,
+    "tokens_received": 44100,
+    "tokens_emitted": 44100
+  },
+  "attestation_recorded_output": {
+    "matching_measurements": 4,
+    "measurements": 4,
+    "negative_controls": 44,
+    "negative_controls_matching_original": 0
+  },
+  "credit_recorded_output": {
+    "bitflips": 5448,
+    "decode_errors": 1330,
+    "invalid_proofs": 4118,
+    "accepted_same": 0,
+    "accepted_changed": 0
+  },
+  "illustrative_arithmetic": {
+    "three_TC15_only_in_600": {
+      "count": 3,
+      "ratio_percent": 0.5
+    },
+    "three_each_in_TC15_and_TC40_in_600": {
+      "count": 6,
+      "ratio_percent": 1.0
+    },
+    "twenty_growing_prompts_at_200_new_tokens": 42000,
+    "new_tokens_only_in_same_simplified_example": 4000,
+    "timing_model_top1_N100_delay_1_day": 0.23255813953488372,
+    "timing_model_top1_N100_delay_7_days": 0.041493775933609964
+  }
+}

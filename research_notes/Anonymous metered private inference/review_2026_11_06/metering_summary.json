@@ -1,0 +1,674 @@
+{
+ "prompt": {
+  "n": 434,
+  "mismatch": 13,
+  "causes": {
+   "assistant prefill: server continues last message, HF template closes it (delta +6)": 10,
+   "server rejects lone surrogate JSON (HTTP 400); nothing billed": 2,
+   "client template cannot render typed content parts (server flattens them)": 2,
+   "role 'developer': server renames to system, default system prompt not injected (delta +22)": 1
+  }
+ },
+ "hold_prompt": {
+  "exact": 434,
+  "n": 434,
+  "lookup_ms_median": 0.8898749947547913,
+  "lookup_ms_p95": 1.3405829668045044
+ },
+ "completion_text": {
+  "n": 434,
+  "mis": 242,
+  "rep": 16596,
+  "enc": 16347
+ },
+ "completion_text_eos_adj": {
+  "mis": 88,
+  "n": 434
+ },
+ "root_cause": {
+  "requests": {
+   "eos_counted": 160,
+   "match": 234,
+   "noncanonical_sequence_reencode_differs": 26,
+   "stop_string_trimmed": 16
+  },
+  "tokens": {
+   "eos_counted": 160,
+   "special_token_invisible_in_text": 0,
+   "noncanonical_sequence_reencode_differs": 35,
+   "stop_string_trimmed": 16
+  },
+  "n": 434,
+  "encode_decode_ids_differ": 62
+ },
+ "t2": [
+  {
+   "name": "A. re-encode text (chat, non-stream)",
+   "n": 434,
+   "mis": 242,
+   "bycat": {
+    "ascii": [
+     11,
+     25
+    ],
+    "latin_combining_misc": [
+     9,
+     25
+    ],
+    "emoji": [
+     29,
+     36
+    ],
+    "cjk": [
+     18,
+     30
+    ],
+    "rtl": [
+     15,
+     24
+    ],
+    "code": [
+     10,
+     30
+    ],
+    "long_whitespace": [
+     24,
+     54
+    ],
+    "special_token_like": [
+     32,
+     52
+    ],
+    "stop_sequence": [
+     27,
+     40
+    ],
+    "max_tokens_trunc": [
+     12,
+     30
+    ],
+    "multi_turn": [
+     26,
+     30
+    ],
+    "assistant_prefill": [
+     9,
+     10
+    ],
+    "edge_cases": [
+     10,
+     18
+    ],
+    "utf8_partial_forced": [
+     5,
+     20
+    ],
+    "special_output_forced": [
+     5,
+     10
+    ]
+   },
+   "max_abs_delta": 16
+  },
+  {
+   "name": "B. OAI logprobs id list (chat, non-stream)",
+   "n": 434,
+   "mis": 157,
+   "bycat": {
+    "ascii": [
+     0,
+     25
+    ],
+    "latin_combining_misc": [
+     13,
+     25
+    ],
+    "emoji": [
+     30,
+     36
+    ],
+    "cjk": [
+     28,
+     30
+    ],
+    "rtl": [
+     13,
+     24
+    ],
+    "code": [
+     0,
+     30
+    ],
+    "long_whitespace": [
+     1,
+     54
+    ],
+    "special_token_like": [
+     1,
+     52
+    ],
+    "stop_sequence": [
+     24,
+     40
+    ],
+    "max_tokens_trunc": [
+     20,
+     30
+    ],
+    "multi_turn": [
+     12,
+     30
+    ],
+    "assistant_prefill": [
+     4,
+     10
+    ],
+    "edge_cases": [
+     1,
+     18
+    ],
+    "utf8_partial_forced": [
+     10,
+     20
+    ],
+    "special_output_forced": [
+     0,
+     10
+    ]
+   },
+   "max_abs_delta": 86
+  },
+  {
+   "name": "C. OAI logprobs id list (chat, stream)",
+   "n": 145,
+   "mis": 92,
+   "bycat": {
+    "ascii": [
+     5,
+     9
+    ],
+    "latin_combining_misc": [
+     4,
+     8
+    ],
+    "emoji": [
+     10,
+     12
+    ],
+    "cjk": [
+     10,
+     10
+    ],
+    "rtl": [
+     6,
+     8
+    ],
+    "code": [
+     2,
+     10
+    ],
+    "long_whitespace": [
+     7,
+     18
+    ],
+    "special_token_like": [
+     9,
+     17
+    ],
+    "stop_sequence": [
+     12,
+     14
+    ],
+    "max_tokens_trunc": [
+     10,
+     10
+    ],
+    "multi_turn": [
+     8,
+     10
+    ],
+    "assistant_prefill": [
+     3,
+     3
+    ],
+    "edge_cases": [
+     3,
+     6
+    ],
+    "utf8_partial_forced": [
+     1,
+     6
+    ],
+    "special_output_forced": [
+     2,
+     4
+    ]
+   },
+   "max_abs_delta": 72
+  },
+  {
+   "name": "D. content chunk count (chat, stream)",
+   "n": 434,
+   "mis": 284,
+   "bycat": {
+    "ascii": [
+     11,
+     25
+    ],
+    "latin_combining_misc": [
+     16,
+     25
+    ],
+    "emoji": [
+     32,
+     36
+    ],
+    "cjk": [
+     29,
+     30
+    ],
+    "rtl": [
+     22,
+     24
+    ],
+    "code": [
+     11,
+     30
+    ],
+    "long_whitespace": [
+     21,
+     54
+    ],
+    "special_token_like": [
+     32,
+     52
+    ],
+    "stop_sequence": [
+     28,
+     40
+    ],
+    "max_tokens_trunc": [
+     20,
+     30
+    ],
+    "multi_turn": [
+     27,
+     30
+    ],
+    "assistant_prefill": [
+     8,
+     10
+    ],
+    "edge_cases": [
+     12,
+     18
+    ],
+    "utf8_partial_forced": [
+     11,
+     20
+    ],
+    "special_output_forced": [
+     4,
+     10
+    ]
+   },
+   "max_abs_delta": 86
+  },
+  {
+   "name": "E. verbose+return_tokens __verbose.tokens (chat, non-stream)",
+   "n": 434,
+   "mis": 0,
+   "bycat": {
+    "ascii": [
+     0,
+     25
+    ],
+    "latin_combining_misc": [
+     0,
+     25
+    ],
+    "emoji": [
+     0,
+     36
+    ],
+    "cjk": [
+     0,
+     30
+    ],
+    "rtl": [
+     0,
+     24
+    ],
+    "code": [
+     0,
+     30
+    ],
+    "long_whitespace": [
+     0,
+     54
+    ],
+    "special_token_like": [
+     0,
+     52
+    ],
+    "stop_sequence": [
+     0,
+     40
+    ],
+    "max_tokens_trunc": [
+     0,
+     30
+    ],
+    "multi_turn": [
+     0,
+     30
+    ],
+    "assistant_prefill": [
+     0,
+     10
+    ],
+    "edge_cases": [
+     0,
+     18
+    ],
+    "utf8_partial_forced": [
+     0,
+     20
+    ],
+    "special_output_forced": [
+     0,
+     10
+    ]
+   },
+   "max_abs_delta": 0
+  },
+  {
+   "name": "F. /completion return_tokens tokens[] (native, non-stream)",
+   "n": 434,
+   "mis": 0,
+   "bycat": {
+    "ascii": [
+     0,
+     25
+    ],
+    "latin_combining_misc": [
+     0,
+     25
+    ],
+    "emoji": [
+     0,
+     36
+    ],
+    "cjk": [
+     0,
+     30
+    ],
+    "rtl": [
+     0,
+     24
+    ],
+    "code": [
+     0,
+     30
+    ],
+    "long_whitespace": [
+     0,
+     54
+    ],
+    "special_token_like": [
+     0,
+     52
+    ],
+    "stop_sequence": [
+     0,
+     40
+    ],
+    "max_tokens_trunc": [
+     0,
+     30
+    ],
+    "multi_turn": [
+     0,
+     30
+    ],
+    "assistant_prefill": [
+     0,
+     10
+    ],
+    "edge_cases": [
+     0,
+     18
+    ],
+    "utf8_partial_forced": [
+     0,
+     20
+    ],
+    "special_output_forced": [
+     0,
+     10
+    ]
+   },
+   "max_abs_delta": 0
+  },
+  {
+   "name": "G. /completion return_tokens tokens[] (native, stream)",
+   "n": 434,
+   "mis": 136,
+   "bycat": {
+    "ascii": [
+     0,
+     25
+    ],
+    "latin_combining_misc": [
+     13,
+     25
+    ],
+    "emoji": [
+     30,
+     36
+    ],
+    "cjk": [
+     27,
+     30
+    ],
+    "rtl": [
+     13,
+     24
+    ],
+    "code": [
+     0,
+     30
+    ],
+    "long_whitespace": [
+     3,
+     54
+    ],
+    "special_token_like": [
+     1,
+     52
+    ],
+    "stop_sequence": [
+     0,
+     40
+    ],
+    "max_tokens_trunc": [
+     20,
+     30
+    ],
+    "multi_turn": [
+     14,
+     30
+    ],
+    "assistant_prefill": [
+     4,
+     10
+    ],
+    "edge_cases": [
+     1,
+     18
+    ],
+    "utf8_partial_forced": [
+     10,
+     20
+    ],
+    "special_output_forced": [
+     0,
+     10
+    ]
+   },
+   "max_abs_delta": 86
+  },
+  {
+   "name": "H. native stream running tokens_predicted, last value, vs final",
+   "n": 434,
+   "mis": 49,
+   "bycat": {
+    "ascii": [
+     0,
+     25
+    ],
+    "latin_combining_misc": [
+     4,
+     25
+    ],
+    "emoji": [
+     11,
+     36
+    ],
+    "cjk": [
+     11,
+     30
+    ],
+    "rtl": [
+     2,
+     24
+    ],
+    "code": [
+     0,
+     30
+    ],
+    "long_whitespace": [
+     0,
+     54
+    ],
+    "special_token_like": [
+     0,
+     52
+    ],
+    "stop_sequence": [
+     0,
+     40
+    ],
+    "max_tokens_trunc": [
+     13,
+     30
+    ],
+    "multi_turn": [
+     4,
+     30
+    ],
+    "assistant_prefill": [
+     1,
+     10
+    ],
+    "edge_cases": [
+     0,
+     18
+    ],
+    "utf8_partial_forced": [
+     3,
+     20
+    ],
+    "special_output_forced": [
+     0,
+     10
+    ]
+   },
+   "max_abs_delta": 8
+  },
+  {
+   "name": "I. chat stream timings_per_token predicted_n, last content chunk, vs usage",
+   "n": 434,
+   "mis": 224,
+   "bycat": {
+    "ascii": [
+     11,
+     25
+    ],
+    "latin_combining_misc": [
+     9,
+     25
+    ],
+    "emoji": [
+     26,
+     36
+    ],
+    "cjk": [
+     19,
+     30
+    ],
+    "rtl": [
+     15,
+     24
+    ],
+    "code": [
+     11,
+     30
+    ],
+    "long_whitespace": [
+     18,
+     54
+    ],
+    "special_token_like": [
+     31,
+     52
+    ],
+    "stop_sequence": [
+     25,
+     40
+    ],
+    "max_tokens_trunc": [
+     13,
+     30
+    ],
+    "multi_turn": [
+     22,
+     30
+    ],
+    "assistant_prefill": [
+     5,
+     10
+    ],
+    "edge_cases": [
+     11,
+     18
+    ],
+    "utf8_partial_forced": [
+     4,
+     20
+    ],
+    "special_output_forced": [
+     4,
+     10
+    ]
+   },
+   "max_abs_delta": 8
+  }
+ ],
+ "decode_vs_text": {
+  "equal": 357,
+  "partial_utf8_tail": 43,
+  "ids_extend_text_stop_word": 24,
+  "whitespace_only_diff": 2,
+  "other": 8
+ },
+ "corpus_ceiling": {
+  "over": 0,
+  "n": 2459
+ },
+ "ctl": {
+  "n": 109,
+  "same_text": 99,
+  "same_usage": 104
+ }
+}

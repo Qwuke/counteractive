@@ -1,0 +1,7 @@
+RESULT | atomic store (lock across check/verify/record), 2 proofs 1 credential, trials=200: exactly_one_winner=200 both=0 none=0
+PASS | T4 atomic store: exactly one winner in every race | 
+RESULT | check-then-refund-then-insert (crate doc comment shape, without the 'atomically in production' lock), trials=200: double_accepted=200 single=0
+INFO | split: 10000 -> remainder 7000 + [1000, 1000, 1000]
+PASS | T4 split conserves value | 10000
+RESULT | parallel spends from 4 independent split credentials: all_accepted_trials=50/50
+INFO | merge via spend-all(1000)+spend-all(2000)+issue(3000) works (3000), but reveals both balances in clear as s; no in-protocol merge exists in 0.4.2

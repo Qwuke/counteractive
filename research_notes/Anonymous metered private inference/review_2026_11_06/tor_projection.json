@@ -1,0 +1,72 @@
+{
+  "streams": [
+    {
+      "run": "stream-r100-1-26462be2e03e",
+      "done": true,
+      "n_tokens_rx": 3000,
+      "n_emitted": 3000
+    },
+    {
+      "run": "stream-r100-2-468cbd07a67e",
+      "done": true,
+      "n_tokens_rx": 3000,
+      "n_emitted": 3000
+    },
+    {
+      "run": "stream-r100-3-3abea8c6680f",
+      "done": true,
+      "n_tokens_rx": 3000,
+      "n_emitted": 3000
+    },
+    {
+      "run": "stream-r30-1-9d11591b62c5",
+      "done": true,
+      "n_tokens_rx": 900,
+      "n_emitted": 900
+    },
+    {
+      "run": "stream-r30-2-28d71ca825ef",
+      "done": true,
+      "n_tokens_rx": 900,
+      "n_emitted": 900
+    },
+    {
+      "run": "stream-r30-3-1031ce834b26",
+      "done": true,
+      "n_tokens_rx": 900,
+      "n_emitted": 900
+    },
+    {
+      "run": "stream-r60-1-5ecc5e95e275",
+      "done": true,
+      "n_tokens_rx": 1800,
+      "n_emitted": 1800
+    },
+    {
+      "run": "stream-r60-2-f1e25475ccc8",
+      "done": true,
+      "n_tokens_rx": 1800,
+      "n_emitted": 1800
+    },
+    {
+      "run": "stream-r60-3-da775053ea43",
+      "done": true,
+      "n_tokens_rx": 1800,
+      "n_emitted": 1800
+    }
+  ],
+  "sustained": [
+    {
+      "run": "sustained-r30-e8652e7dbf2e",
+      "done": true,
+      "n_tokens_rx": 9000,
+      "n_emitted": 9000
+    },
+    {
+      "run": "sustained-r60-b1223d03e5da",
+      "done": true,
+      "n_tokens_rx": 18000,
+      "n_emitted": 18000
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+PASS | T2 library alone: refund() accepts same proof twice (no nullifier state inside) | caller MUST enforce
+PASS | T2 store: first spend fresh | 
+PASS | T2 same token, new proof: same nullifier revealed | 
+PASS | T2 store: double spend with different proof rejected | 
+INFO | tamper L=16 msg_len=2724 flips=5448 decode_err=1330 InvalidProof=4118 InvalidAmount=0 accepted_same_semantics=0 accepted_changed=0 accepted_at=[] secs=3.4
+PASS | T2 no single-bit flip yields an accepted changed proof | 5448 flips
+PASS | T2 lower s from 2000 to 1 rejected | 
+PASS | T2 replace nullifier rejected | 
+PASS | T2 replace ctx rejected | 
+INFO | trailing byte appended: from_cbor ok=true refund ok=true
+INFO | CBOR keys reversed: differs=true from_cbor ok=true refund ok=true
+INFO | malleated front-run: attacker result fresh=true victim retry=true
+INFO | -> digest-keyed record over raw bytes: victim gets RejectDup=true, i.e. the remaining balance is stranded unless digest is over re-encoded canonical bytes
+PASS | T2 digest over re-encoded bytes removes trailing-byte malleability | 
+PASS | T2 digest over re-encoded bytes removes key-order malleability | 
+PASS | T2 overspend honest API refuses at client | s=10001,c=10000
+PASS | T2 s>=2^L refused | 
+PASS | T2 inflated local balance 50000: client proves, issuer rejects | 
+PASS | T2 forged overspend (prover check removed) rejected by issuer | s=10001 c=10000
+PASS | T2 forged overspend (prover check removed) rejected by issuer | s=20000 c=10000
+PASS | T2 forged overspend (prover check removed) rejected by issuer | s=65535 c=10000
+PASS | T2 store: re-request returns stored refund byte-identically, t frozen despite new t | 
+PASS | T2 library alone: refund() is randomised (not idempotent) | 
+PASS | T2 library alone: re-request with bigger t mints a higher-balance sibling | 8600 vs 9999
+PASS | T2 sibling tokens share a nullifier (only one spendable) | 
+PASS | T2 sibling: higher-balance spends, other rejected -> issuer freezing t is what prevents gain | 
+PASS | T2 refund for spend A applied to spend B state rejected | 
+PASS | T2 replayed issuance request: issuer signs again; tokens share a nullifier | library has no issuance dedupe
+PASS | T2 credential from other issuer key rejected | 
+PASS | T2 other deployment params rejected | 
+PASS | T2 client rejects refund verified against wrong issuer key | 
+INFO | key partition oracle: issuer holding many keys learns which key signed a token by trial verification (hits=1/2) -> clients must pin one public key
+PASS | T2 proof at L=16 will not decode as L=8 | 
