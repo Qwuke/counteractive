@@ -1,0 +1,54 @@
+[package]
+name = "gate"
+description = "The CVM service: inner TLS, attestation, issuance on issue.sock, sessions, metering and refunds."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+# Arms crash_point! for kill tests. Never on in a release build.
+crash-points = ["crash-point/enabled"]
+
+[dependencies]
+proto.workspace = true
+credit.workspace = true
+manifest.workspace = true
+attest.workspace = true
+metering.workspace = true
+backend.workspace = true
+gate-conn = { workspace = true, features = ["server"] }
+crash-point.workspace = true
+anyhow.workspace = true
+axum.workspace = true
+bytes.workspace = true
+chacha20poly1305.workspace = true
+clap.workspace = true
+futures.workspace = true
+hex.workspace = true
+hkdf.workspace = true
+rand.workspace = true
+rusqlite.workspace = true
+secrecy.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+subtle.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+zeroize.workspace = true
+
+[dev-dependencies]
+fake-engine.workspace = true
+# Tests sign the manifests they post to the gate.
+manifest = { workspace = true, features = ["sign"] }
+tempfile.workspace = true
+http-body-util.workspace = true
+hyper.workspace = true
+hyper-util.workspace = true
